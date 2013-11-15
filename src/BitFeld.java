@@ -1,9 +1,10 @@
+
 import java.util.Arrays;
 
 /**
  * Update by
  * 
- * @author J������rgen Br������ckle (braeckle@in.tum.de)
+ * @author Jürgen Bräckle (braeckle@in.tum.de)
  * @version 1.2  10.Mai 2013
  * 
  *          Diese Klasse verwaltet ein Bitarray und liefert diverse Funktionen
@@ -43,7 +44,7 @@ public class BitFeld {
 	/**
 	 * erzeugt ein Bitfeld der Laenge size und setzt die Bits entsprechend dem
 	 * Integer wert
-	 *for/
+	 */
 	BitFeld(int size, int wert) {
 		this(size);
 		this.setInt(wert);
@@ -123,7 +124,7 @@ public class BitFeld {
 		return erg;
 	}
 
-	/** Gibt das Objekt in bin������rer Darstellung aus */
+	/** Gibt das Objekt in binärer Darstellung aus */
 	public void ausgeben() {
 		System.out.println(this.toString());
 	}
@@ -263,7 +264,6 @@ public class BitFeld {
 		
 		for(int i = 0; i < b.size; i++) {	
 			addResult = addBits(this.bits[i], b.bits[i], addResult[1]);
-			//System.out.println("Setze: " + addResult[0] + "\n");
 			result.bits[i] = addResult[0];
 		}
 		
@@ -279,13 +279,22 @@ public class BitFeld {
 	 * aktuellen Objekt ist.
 	 */
 	public BitFeld sub(BitFeld b) {
+		if(this.size != b.size) {
+			System.err.println("sub() :: BitFields do not have equal size");
+		} else if(this.toInt() < b.toInt()) {
+			System.err.println("sub() :: Integer representation A < B :: Result may be negative");
+		}
+		
+		BitFeld first = new BitFeld(this);
+		first.erweitern(1);
 
-		/*
-		 * TODO: hier ist die bitweise Operation sub zu implementieren. Die
-		 * Verwendung von toInt ist hier nicht gestattet, da die BitFeldklasse
-		 * auch fuer >32Bits funktionieren soll.
-		 */
-		return new BitFeld(b);
+		BitFeld second = new BitFeld(b);
+		second.twosComplement();
+		
+		BitFeld result = first.add(second);
+		result.cutHighest2();
+		
+		return result;
 	}
 	
 	static int count;
@@ -295,7 +304,7 @@ public class BitFeld {
 		// Ergebnis der Bit Addition
 		result[0] = (first ^ second ^ carry);
 		
-		// ������bertrag der Bit Ad00dition
+		// Übertrag der Bit Ad00dition
 		result[1] = 
 				(first == true && second == true) ||
 				(first == true && carry == true) ||
@@ -305,5 +314,25 @@ public class BitFeld {
 		count++;
 		return result;
 	} 
+	
+	private void twosComplement() {
+		erweitern(1);
+		for(int i = 0; i < size; i++) {
+			bits[i] = !bits[i];
+		}
+		for(int i = 0; i < size; i++) {
+			if(bits[i] == true) bits[i] = false;
+			else if(bits[i] == false) {
+				bits[i] = true; 
+				break;
+			}
+		}
+		// System.out.println("2s-complement: " + this);
+	}
+	
+	private void cutHighest2() {
+		bits = Arrays.copyOf(bits, size - 2);
+		size -= 2;
+	}
 	
 }

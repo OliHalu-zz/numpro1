@@ -1,8 +1,9 @@
+
 import javax.swing.JFrame;
 
 /**
  * @author Christoph Riesinger (riesinge@in.tum.de)
- * @author J��rgen Br��ckle (braeckle@in.tum.de)
+ * @author Jürgen Bräckle (braeckle@in.tum.de)
  * @version 1.2  10.Mai 2013
  * 
  *          This class just contains a main() method to use the FastMath class
