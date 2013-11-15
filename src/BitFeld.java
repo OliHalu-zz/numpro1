@@ -264,7 +264,6 @@ public class BitFeld {
 		
 		for(int i = 0; i < b.size; i++) {	
 			addResult = addBits(this.bits[i], b.bits[i], addResult[1]);
-			System.out.println("Setze: " + addResult[0] + "\n");
 			result.bits[i] = addResult[0];
 		}
 		
@@ -280,13 +279,23 @@ public class BitFeld {
 	 * aktuellen Objekt ist.
 	 */
 	public BitFeld sub(BitFeld b) {
-
-		/*
-		 * TODO: hier ist die bitweise Operation sub zu implementieren. Die
-		 * Verwendung von toInt ist hier nicht gestattet, da die BitFeldklasse
-		 * auch fuer >32Bits funktionieren soll.
-		 */
-		return new BitFeld(b);
+		if(this.size != b.size) {
+			System.err.println("sub() :: BitFields do not have equal size");
+		} else if(this.toInt() < b.toInt()) {
+			System.err.println("sub() :: Integer representation A < B :: Result may be negative");
+		}
+		
+		BitFeld first = new BitFeld(this);
+		first.erweitern(1);
+		System.out.println("First erweitert: " + first);
+		
+		BitFeld second = new BitFeld(b);
+		second.twosComplement();
+		
+		BitFeld result = first.add(second);
+		result.cutHighest2();
+		
+		return result;
 	}
 	
 	static int count;
@@ -306,5 +315,25 @@ public class BitFeld {
 		count++;
 		return result;
 	} 
+	
+	private void twosComplement() {
+		erweitern(1);
+		for(int i = 0; i < size; i++) {
+			bits[i] = !bits[i];
+		}
+		for(int i = 0; i < size; i++) {
+			if(bits[i] == true) bits[i] = false;
+			else if(bits[i] == false) {
+				bits[i] = true; 
+				break;
+			}
+		}
+		System.out.println("2s-complement: " + this);
+	}
+	
+	private void cutHighest2() {
+		bits = Arrays.copyOf(bits, size - 2);
+		size -= 2;
+	}
 	
 }
