@@ -64,6 +64,22 @@ public class Test_Gleitpunktzahl {
 			} else {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
+			
+			/** Test4 */
+			a.erweitern(10);
+			b.erweitern(10);
+			a.setInt(13451);
+			b.setInt(53179);
+			checkref = new BitFeld(19);
+			checkref.setInt(66630);
+			System.out.println("Test #4: Bitweise Addition");
+			erg = a.add(b);
+			if (erg.compareTo(checkref) != 0) {
+				printAdd(a.toString(), b.toString());
+				printErg(erg.toString(), checkref.toString());
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
 
 		} catch (Exception e) {
 			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
@@ -134,6 +150,22 @@ public class Test_Gleitpunktzahl {
 			checkref.setInt(0);
 			erg = a.sub(b);
 			System.out.println("Test #4: Bitweise Subtraktion");
+			if (erg.compareTo(checkref) != 0) {
+				printAdd(a.toString(), b.toString());
+				printErg(erg.toString(), checkref.toString());
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			/** Test5 */
+			a.erweitern(15);
+			b.erweitern(15);
+			a.setInt(938190);
+			b.setInt(31487);
+			checkref = new BitFeld(23);
+			checkref.setInt(906703);
+			erg = a.sub(b);
+			System.out.println("Test #5: Bitweise Subtraktion");
 			if (erg.compareTo(checkref) != 0) {
 				printAdd(a.toString(), b.toString());
 				printErg(erg.toString(), checkref.toString());
