@@ -49,8 +49,8 @@ public class FastMath {
 		// Interpret float number as integer		
 		BitFeld intNumber = new BitFeld(x.getAnzBitsExponent() + x.getAnzBitsMantisse() + 1);
 		
-		System.arraycopy(x.mantisse, 0, intNumber.bits, 0, x.getAnzBitsMantisse());
-		System.arraycopy(x.exponent, 0, intNumber.bits, x.getAnzBitsMantisse(), x.getAnzBitsExponent());
+		System.arraycopy(x.mantisse.bits, 0, intNumber.bits, 0, x.getAnzBitsMantisse());
+		System.arraycopy(x.exponent.bits, 0, intNumber.bits, x.getAnzBitsMantisse(), x.getAnzBitsExponent());
 		intNumber.bits[intNumber.getSize() -1] = x.vorzeichen;
 		
 		//Divide by 2 (and round down)
@@ -64,8 +64,8 @@ public class FastMath {
 		result.setAnzBitsExponent(x.getAnzBitsExponent());
 		result.setAnzBitsMantisse(x.getAnzBitsMantisse());
 		
-		System.arraycopy(intNumber.bits, 0, result.mantisse, 0, x.getAnzBitsMantisse());
-		System.arraycopy(intNumber.bits, x.getAnzBitsMantisse(), result.exponent, 0, x.getAnzBitsExponent());
+		System.arraycopy(intNumber.bits, 0, result.mantisse.bits, 0, x.getAnzBitsMantisse());
+		System.arraycopy(intNumber.bits, x.getAnzBitsMantisse(), result.exponent.bits, 0, x.getAnzBitsExponent());
 		result.vorzeichen = intResult.bits[intResult.getSize() - 1];
 		
 		return result;		
