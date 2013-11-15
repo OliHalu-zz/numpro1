@@ -1,9 +1,8 @@
-package src;
 public class Test_Gleitpunktzahl {
 
 	public static void main(String[] argv) {
-		testBitFeld();
-		// test_Gleitpunktzahl();
+		//testBitFeld();
+		 test_Gleitpunktzahl();
 	}
 
 	private static void testBitFeld() {
@@ -63,6 +62,32 @@ public class Test_Gleitpunktzahl {
 			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
 		}
 	}
+	
+	public static void checkResult(Gleitpunktzahl gleitref, Gleitpunktzahl gleiterg){
+		if (gleiterg.compareAbsTo(gleitref) != 0
+				|| gleiterg.vorzeichen != gleitref.vorzeichen) {
+			//printAdd(x.toString(), y.toString());
+			System.out.println("      Ihr Ergebnis lautet:           " + gleitref.toDouble() + " Bool:" + gleitref
+					+ "\n      Das Korrekte Ergebnis lautet:  " + gleiterg.toDouble() + " Bool:" + gleiterg + "\n");
+		} else {
+			System.out.println("    Richtiges Ergebnis\n");
+		}
+	}
+	
+	public static void testGleitpunktzahlAdd(Gleitpunktzahl x, Gleitpunktzahl y, Gleitpunktzahl erg){
+		try {
+			// Berechnung
+			Gleitpunktzahl gleiterg = x.add(y);
+			checkResult(gleiterg, erg);
+		} catch (Exception e) {
+			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
+		}
+	}
+	
+	public static void testDoubleAdd(double fx, double fy){
+		System.out.println("Test: Addition " + fx + " + " + fy);
+		testGleitpunktzahlAdd(new Gleitpunktzahl(fx), new Gleitpunktzahl(fy), new Gleitpunktzahl(fx + fy));
+	}
 
 	public static void test_Gleitpunktzahl() {
 
@@ -87,33 +112,12 @@ public class Test_Gleitpunktzahl {
 
 		/* Addition */
 		System.out.println("Test der Addition mit Gleitpunktzahl");
-		try {
-			// Test: Addition
-			System.out.println("Test: Addition  x + y");
-			x = new Gleitpunktzahl(13.57);
-			y = new Gleitpunktzahl(5.723);
-
-			// Referenzwerte setzen
-			gleitref.mantisse.setInt(155);
-			gleitref.exponent.setInt(37);
-			gleitref.vorzeichen = false;
-			gleitref = new Gleitpunktzahl(19.293);
-
-			// Berechnung
-			gleiterg = x.add(y);
-
-			// Test, ob Ergebnis korrekt
-			if (gleiterg.compareAbsTo(gleitref) != 0
-					|| gleiterg.vorzeichen != gleitref.vorzeichen) {
-				printAdd(x.toString(), y.toString());
-				printErg(gleiterg.toString(), gleitref.toString());
-			} else {
-				System.out.println("    Richtiges Ergebnis\n");
-			}
-
-		} catch (Exception e) {
-			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
-		}
+		testDoubleAdd(19.462, 1.552);
+		testDoubleAdd(13.571, 5.723);
+		
+		testDoubleAdd(-13, 9.123);
+		testDoubleAdd(-13.57, -4.3);
+		//testGleitpunktzahlAdd(Gleitpunktzahl.inf, y, erg)
 
 		/* Subtraktion */
 		try {
@@ -122,8 +126,18 @@ public class Test_Gleitpunktzahl {
 			/*************
 			 * Eigene Tests einfuegen
 			 */
+			System.out.println("Test: Substraktion  x - y");
+			x = new Gleitpunktzahl(13.57);
+			y = new Gleitpunktzahl(5.723);
 
-			System.out.println("Eigene Tests einfuegen!!!");
+			// Referenzwerte setzen
+			gleitref = new Gleitpunktzahl(7.847);
+
+			// Berechnung
+			//gleiterg = x.sub(y);
+
+			// Test, ob Ergebnis korrekt
+			
 
 		} catch (Exception e) {
 			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
@@ -131,18 +145,30 @@ public class Test_Gleitpunktzahl {
 
 		/* Sonderfaelle */
 		System.out.println("Test der Sonderfaelle mit Gleitpunktzahl");
-
+		
+		testGleitpunktzahlAdd(Gleitpunktzahl.getPosInfinite(), Gleitpunktzahl.getPosInfinite(), Gleitpunktzahl.getPosInfinite());
+		testGleitpunktzahlAdd(Gleitpunktzahl.getNegInfinite(), Gleitpunktzahl.getPosInfinite(), Gleitpunktzahl.getPosInfinite());
+		testGleitpunktzahlAdd(Gleitpunktzahl.getNegInfinite(), Gleitpunktzahl.getNegInfinite(), Gleitpunktzahl.getNegInfinite());
+		testGleitpunktzahlAdd(Gleitpunktzahl.getNull(), new Gleitpunktzahl(1.34), new Gleitpunktzahl(1.34));
+		testGleitpunktzahlAdd(new Gleitpunktzahl(0.0), new Gleitpunktzahl(1.0 / 0.0), Gleitpunktzahl.getPosInfinite());
+		
 		try {
 			// Test: Sonderfaelle
 			// 0 - inf
 			System.out.println("Test: Sonderfaelle");
 			x = new Gleitpunktzahl(0.0);
 			y = new Gleitpunktzahl(1.0 / 0.0);
+			
+			boolean n = y.isNaN();
+			boolean pi = y.isInfinite();
 
 			// Referenzwerte setzen
 			gleitref.mantisse.setInt(0);
 			gleitref.exponent.setInt(63);
 			gleitref.vorzeichen = true;
+			
+			boolean n1 = gleitref.isNaN();
+			boolean pi1 = gleitref.isInfinite();
 
 			// Berechnung mit der Methode des Studenten durchfuehren
 			gleiterg = x.sub(y);

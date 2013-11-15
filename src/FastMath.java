@@ -1,7 +1,6 @@
-package src;
 /**
  * @author Christoph Riesinger (riesinge@in.tum.de)
- * @author Jürgen Bräckle (braeckle@in.tum.de)
+ * @author J��rgen Br��ckle (braeckle@in.tum.de)
  * @version 1.2  10.Mai 2013
  * 
  *          This class contains methods for rapidly calculating basic
@@ -44,8 +43,7 @@ public class FastMath {
 	 */
 	public static Gleitpunktzahl invSqrt(Gleitpunktzahl x) {
 
-		BitFeld magicBits = new BitFeld(x.getAnzBitsExponent()
-				+ x.getAnzBitsMantisse(), MAGIC_NUMBER);
+		BitFeld magicBits = new BitFeld(x.getAnzBitsExponent() + x.getAnzBitsMantisse(), MAGIC_NUMBER);
 		
 		return new Gleitpunktzahl();
 		/* TODO: hier den "fast inverse square root" Algorithmus implementieren */
@@ -85,8 +83,8 @@ public class FastMath {
 	/**
 	 * Uebersetzt die Gleitpunktzahl in eine BitFolge aehnlich dem IEEE
 	 * Standard, d.h. in die Form [Vorzeichen, Exponent, Mantisse], wobei die
-	 * führende 1 der Mantisse nicht gespeichert wird. Dieser Wechsel ist noetig
-	 * für ein Funktionieren des Fast Inverse Sqrt Algorithmus
+	 * f��hrende 1 der Mantisse nicht gespeichert wird. Dieser Wechsel ist noetig
+	 * f��r ein Funktionieren des Fast Inverse Sqrt Algorithmus
 	 */
 	public static BitFeld gleitpunktzahlToIEEE(Gleitpunktzahl x) {
 		int anzBitsExponent = x.getAnzBitsExponent();
@@ -109,7 +107,7 @@ public class FastMath {
 
 	/**
 	 * Liefert aus einem BitFeld in IEEE Darstellung, d.h. [Vorzeichen,
-	 * Exponent, Mantisse] mit Mantisse ohne führende Null, die entsprechende
+	 * Exponent, Mantisse] mit Mantisse ohne f��hrende Null, die entsprechende
 	 * Gleitpunktdarstellung
 	 */
 	public static Gleitpunktzahl iEEEToGleitpunktzahl(BitFeld b) {

@@ -1,10 +1,9 @@
-package src;
 import java.util.Arrays;
 
 /**
  * Update by
  * 
- * @author Jürgen Bräckle (braeckle@in.tum.de)
+ * @author J������rgen Br������ckle (braeckle@in.tum.de)
  * @version 1.2  10.Mai 2013
  * 
  *          Diese Klasse verwaltet ein Bitarray und liefert diverse Funktionen
@@ -124,7 +123,7 @@ public class BitFeld {
 		return erg;
 	}
 
-	/** Gibt das Objekt in binärer Darstellung aus */
+	/** Gibt das Objekt in bin������rer Darstellung aus */
 	public void ausgeben() {
 		System.out.println(this.toString());
 	}
@@ -264,7 +263,7 @@ public class BitFeld {
 		
 		for(int i = 0; i < b.size; i++) {	
 			addResult = addBits(this.bits[i], b.bits[i], addResult[1]);
-			System.out.println("Setze: " + addResult[0] + "\n");
+			//System.out.println("Setze: " + addResult[0] + "\n");
 			result.bits[i] = addResult[0];
 		}
 		
@@ -296,7 +295,7 @@ public class BitFeld {
 		// Ergebnis der Bit Addition
 		result[0] = (first ^ second ^ carry);
 		
-		// Übertrag der Bit Ad00dition
+		// ������bertrag der Bit Ad00dition
 		result[1] = 
 				(first == true && second == true) ||
 				(first == true && carry == true) ||
