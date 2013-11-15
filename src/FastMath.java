@@ -47,8 +47,35 @@ public class FastMath {
 		BitFeld magicBits = new BitFeld(x.getAnzBitsExponent()
 				+ x.getAnzBitsMantisse(), MAGIC_NUMBER);
 		
+		// Interpret float number as integer
+		BitFeld intNumber = new BitFeld(x.getAnzBitsExponent()
+				+ x.getAnzBitsMantisse() + 1);
+		
+		intNumber.bits[intNumber.getSize()-1] = x.vorzeichen;
+		
+		for (int i = 0; i < x.getAnzBitsMantisse(); i++) {
+			intNumber.bits[intNumber.getSize()-(1+i)] = x.mantisse.bits[i];
+		}
+		
+		for (int i = 0; i < x.getAnzBitsExponent(); i++) {
+			intNumber.bits[intNumber.getSize()-(1+x.getAnzBitsMantisse()+i)] = x.exponent.bits[i];
+		}
+		
+		//Divide by 2 (and round down)
+		intNumber.shiftRight(1, false);
+		
+		//Subtract intNumber from magicNumber
+		BitFeld intResult = magicBits.sub(intNumber);
+		
+		//Interpret integer result as float
+		Gleitpunktzahl result = new Gleitpunktzahl();
+		result.setAnzBitsExponent(x.getAnzBitsExponent());
+		result.setAnzBitsMantisse(x.getAnzBitsMantisse());
+		
+		
 		return new Gleitpunktzahl();
 		/* TODO: hier den "fast inverse square root" Algorithmus implementieren */
+		
 	}
 
 	/**
