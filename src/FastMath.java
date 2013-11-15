@@ -47,19 +47,12 @@ public class FastMath {
 		BitFeld magicBits = new BitFeld(x.getAnzBitsExponent()
 				+ x.getAnzBitsMantisse(), MAGIC_NUMBER);
 		
-		// Interpret float number as integer
-		BitFeld intNumber = new BitFeld(x.getAnzBitsExponent()
-				+ x.getAnzBitsMantisse() + 1);
+		// Interpret float number as integer		
+		BitFeld intNumber = new BitFeld(x.getAnzBitsExponent() + x.getAnzBitsMantisse() + 1);
 		
-		intNumber.bits[intNumber.getSize()-1] = x.vorzeichen;
-		
-		for (int i = 0; i < x.getAnzBitsMantisse(); i++) {
-			intNumber.bits[intNumber.getSize()-(1+i)] = x.mantisse.bits[i];
-		}
-		
-		for (int i = 0; i < x.getAnzBitsExponent(); i++) {
-			intNumber.bits[intNumber.getSize()-(1+x.getAnzBitsMantisse()+i)] = x.exponent.bits[i];
-		}
+		System.arraycopy(x.mantisse, 0, intNumber.bits, 0, x.getAnzBitsMantisse());
+		System.arraycopy(x.exponent, 0, intNumber.bits, x.getAnzBitsMantisse(), x.getAnzBitsExponent());
+		intNumber.bits[intNumber.bits.length -1] = x.vorzeichen;
 		
 		//Divide by 2 (and round down)
 		intNumber.shiftRight(1, false);
@@ -86,9 +79,7 @@ public class FastMath {
 			zaehler++;
 		}
 		
-		return result;
-		/* TODO: hier den "fast inverse square root" Algorithmus implementieren */
-		
+		return result;		
 	}
 
 	/**
