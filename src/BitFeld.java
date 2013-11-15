@@ -287,8 +287,7 @@ public class BitFeld {
 		
 		BitFeld first = new BitFeld(this);
 		first.erweitern(1);
-		System.out.println("First erweitert: " + first);
-		
+
 		BitFeld second = new BitFeld(b);
 		second.twosComplement();
 		
@@ -328,7 +327,7 @@ public class BitFeld {
 				break;
 			}
 		}
-		System.out.println("2s-complement: " + this);
+		// System.out.println("2s-complement: " + this);
 	}
 	
 	private void cutHighest2() {

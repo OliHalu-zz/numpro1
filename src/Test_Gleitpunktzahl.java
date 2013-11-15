@@ -9,29 +9,27 @@ public class Test_Gleitpunktzahl {
 		System.out.println("-----------------------------------------");
 		System.out.println("Test der Klasse BitFeld");
 
-		/* Test der Addition mit BitFeld */
+		/**
+		 * ##################
+		 * ## Test Additon ##
+		 * ##################
+		 */
 		try {
 			BitFeld a;
 			BitFeld b;
 			BitFeld checkref;
 			BitFeld erg;
 			System.out.println("Test der Addition mit BitFeld");
-			// Test: Bitweise Addition
-
 			a = new BitFeld(8);
 			b = new BitFeld(8);
+			
+			/** Test1 */
 			a.setInt(148);
 			b.setInt(158);
-
-			// Referenzwerte setzen
 			checkref = new BitFeld(9);
 			checkref.setInt(306);
-
-			// Berechnung
-			System.out.println("Test: Bitweise Addition");
+			System.out.println("Test #1: Bitweise Addition");
 			erg = a.add(b);
-
-			// Test, ob Ergebnis korrekt
 			if (erg.compareTo(checkref) != 0) {
 				printAdd(a.toString(), b.toString());
 				printErg(erg.toString(), checkref.toString());
@@ -39,22 +37,13 @@ public class Test_Gleitpunktzahl {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
 
-			/*************
-			 * Eigene Tests einfuegen
-			 */
-			// Test 1
+			/** Test2 */
 			a.setInt(39);
 			b.setInt(255);
-
-			// Referenzwerte setzen
 			checkref = new BitFeld(9);
 			checkref.setInt(294);
-
-			// Berechnung
-			System.out.println("Test: Bitweise Addition");
+			System.out.println("Test #2: Bitweise Addition");
 			erg = a.add(b);
-
-			// Test, ob Ergebnis korrekt
 			if (erg.compareTo(checkref) != 0) {
 				printAdd(a.toString(), b.toString());
 				printErg(erg.toString(), checkref.toString());
@@ -62,19 +51,13 @@ public class Test_Gleitpunktzahl {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
 
-			// Test 2
+			/** Test3 */
 			a.setInt(255);
 			b.setInt(255);
-
-			// Referenzwerte setzen
 			checkref = new BitFeld(9);
 			checkref.setInt(510);
-
-			// Berechnung
-			System.out.println("Test: Bitweise Addition");
+			System.out.println("Test #3: Bitweise Addition");
 			erg = a.add(b);
-
-			// Test, ob Ergebnis korrekt
 			if (erg.compareTo(checkref) != 0) {
 				printAdd(a.toString(), b.toString());
 				printErg(erg.toString(), checkref.toString());
@@ -86,34 +69,29 @@ public class Test_Gleitpunktzahl {
 			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
 		}
 
-		/* Test der Subtraktion mit BitFeld */
-
+		
+		/**
+		 * ######################
+		 * ## Test Subtraction ##
+		 * ######################
+		 */
 		try {
 
-			/*************
-			 * Eigene Tests einfuegen
-			 */
 			BitFeld a;
 			BitFeld b;
 			BitFeld checkref;
 			BitFeld erg;
 			System.out.println("Test der Subktraktion mit BitFeld");
-			// Test: Bitweise Subtraktion
-			//Test 1
 			a = new BitFeld(8);
 			b = new BitFeld(8);
+			
+			/** Test1 */
 			a.setInt(134);
 			b.setInt(51);
-
-			// Referenzwerte setzen
 			checkref = new BitFeld(8);
 			checkref.setInt(83);
-
-			// Berechnung
-			System.out.println("Test: Bitweise Subtraktion");
-			erg = a.add(b);
-
-			// Test, ob Ergebnis korrekt
+			erg = a.sub(b);
+			System.out.println("Test #1: Bitweise Subtraktion");
 			if (erg.compareTo(checkref) != 0) {
 				printAdd(a.toString(), b.toString());
 				printErg(erg.toString(), checkref.toString());
@@ -121,71 +99,47 @@ public class Test_Gleitpunktzahl {
 				System.out.println("    Richtiges Ergebnis\n");
 			}
 			
-//			//Test 2
-//			a = new BitFeld(8);
-//			b = new BitFeld(8);
-//			a.setInt(0);
-//			b.setInt(0);
-//
-//			// Referenzwerte setzen
-//			checkref = new BitFeld(8);
-//			checkref.setInt(0);
-//
-//			// Berechnung
-//			System.out.println("Test: Bitweise Subtraktion");
-//			erg = a.add(b);
-//
-//			// Test, ob Ergebnis korrekt
-//			if (erg.compareTo(checkref) != 0) {
-//				printAdd(a.toString(), b.toString());
-//				printErg(erg.toString(), checkref.toString());
-//			} else {
-//				System.out.println("    Richtiges Ergebnis\n");
-//			}
+			/** Test2 */
+			a.setInt(0);
+			b.setInt(0);
+			checkref = new BitFeld(8);
+			checkref.setInt(0);
+			erg = a.sub(b);
+			System.out.println("Test #2: Bitweise Subtraktion");
+			if (erg.compareTo(checkref) != 0) {
+				printAdd(a.toString(), b.toString());
+				printErg(erg.toString(), checkref.toString());
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
 			
-//			//Test 3
-//			a = new BitFeld(8);
-//			b = new BitFeld(8);
-//			a.setInt(255);
-//			b.setInt(254);
-//
-//			// Referenzwerte setzen
-//			checkref = new BitFeld(8);
-//			checkref.setInt(1);
-//
-//			// Berechnung
-//			System.out.println("Test: Bitweise Subtraktion");
-//			erg = a.add(b);
-//
-//			// Test, ob Ergebnis korrekt
-//			if (erg.compareTo(checkref) != 0) {
-//				printAdd(a.toString(), b.toString());
-//				printErg(erg.toString(), checkref.toString());
-//			} else {
-//				System.out.println("    Richtiges Ergebnis\n");
-//			}
-//			
-//			//Test 4
-//			a = new BitFeld(8);
-//			b = new BitFeld(8);
-//			a.setInt(255);
-//			b.setInt(255);
-//
-//			// Referenzwerte setzen
-//			checkref = new BitFeld(8);
-//			checkref.setInt(0);
-//
-//			// Berechnung
-//			System.out.println("Test: Bitweise Subtraktion");
-//			erg = a.add(b);
-//
-//			// Test, ob Ergebnis korrekt
-//			if (erg.compareTo(checkref) != 0) {
-//				printAdd(a.toString(), b.toString());
-//				printErg(erg.toString(), checkref.toString());
-//			} else {
-//				System.out.println("    Richtiges Ergebnis\n");
-//			}
+			/** Test3 */
+			a.setInt(255);
+			b.setInt(254);
+			checkref = new BitFeld(8);
+			checkref.setInt(1);
+			erg = a.sub(b);
+			System.out.println("Test #3: Bitweise Subtraktion");
+			if (erg.compareTo(checkref) != 0) {
+				printAdd(a.toString(), b.toString());
+				printErg(erg.toString(), checkref.toString());
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
+			
+			/** Test4 */
+			a.setInt(255);
+			b.setInt(255);
+			checkref = new BitFeld(8);
+			checkref.setInt(0);
+			erg = a.sub(b);
+			System.out.println("Test #4: Bitweise Subtraktion");
+			if (erg.compareTo(checkref) != 0) {
+				printAdd(a.toString(), b.toString());
+				printErg(erg.toString(), checkref.toString());
+			} else {
+				System.out.println("    Richtiges Ergebnis\n");
+			}
 
 		} catch (Exception e) {
 			System.out.print("Exception bei der Auswertung des Ergebnis!!\n");
