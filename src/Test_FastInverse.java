@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 
 /**
  * @author Christoph Riesinger (riesinge@in.tum.de)
- * @author Jürgen Bräckle (braeckle@in.tum.de)
+ * @author J��rgen Br��ckle (braeckle@in.tum.de)
  * @version 1.2  10.Mai 2013
  * 
  *          This class just contains a main() method to use the FastMath class
@@ -42,7 +42,8 @@ public class Test_FastInverse {
 		for (int i = 0; i < numOfSamplingPts; i++) {
 			xData[i] = x;
 			Gleitpunktzahl y = new Gleitpunktzahl(x);
-			yData[i] = (float) FastMath.absInvSqrtErr(y);
+			System.out.println(x + " : " + FastMath.invSqrt(y).toDouble() + " ideal: " + (1./Math.sqrt(x)));
+			yData[i] = (float) FastMath.invSqrt(y).toDouble();
 
 			x *= Math.pow(100.0d, 1.0d / numOfSamplingPts);
 		}
