@@ -530,18 +530,15 @@ public class Gleitpunktzahl {
 		Gleitpunktzahl b = new Gleitpunktzahl(r);
 		Gleitpunktzahl result = new Gleitpunktzahl();
 		
-		int size = this.mantisse.getSize();
-		BitFeld maxExponentCopy = new BitFeld(this.compareAbsTo(r) == 1 ? this.exponent : r.exponent);
-		
 		Gleitpunktzahl.denormalisiere(a, b);
 		if(a.vorzeichen == b.vorzeichen){
 			result.vorzeichen = a.vorzeichen;
-			result.exponent = maxExponentCopy;
+			result.exponent = a.exponent;
 			result.mantisse = a.mantisse.add(b.mantisse);
 		}
 		else{
 			Gleitpunktzahl max = null, min = null;
-			if(this.compareAbsTo(result) == 1){
+			if(a.compareAbsTo(b) == 1){
 				max = a;
 				min = b;
 			}
@@ -551,11 +548,11 @@ public class Gleitpunktzahl {
 			}
 			
 			result.vorzeichen = max.vorzeichen;
-			result.exponent = maxExponentCopy;
+			result.exponent = a.exponent;
 			result.mantisse = max.mantisse.sub(min.mantisse);
 		}
 		
-		result.normalisiere(size);
+		result.normalisiere(result.exponent.getSize()+1);
 		
 		return result;
 	}
