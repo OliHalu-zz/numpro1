@@ -72,8 +72,21 @@ public class FastMath {
 		result.setAnzBitsExponent(x.getAnzBitsExponent());
 		result.setAnzBitsMantisse(x.getAnzBitsMantisse());
 		
+		result.vorzeichen = intResult.bits[intResult.getSize()-1];
 		
-		return new Gleitpunktzahl();
+		int zaehler = 0;
+		for (int i = intResult.getSize() - 2; i > x.getAnzBitsExponent() - 1; i++) {
+			result.mantisse.bits[zaehler] = intResult.bits[i];
+			zaehler++;
+		}
+		
+		zaehler = 0;
+		for (int i = x.getAnzBitsExponent() - 1; i >= 0; i++) {
+			result.exponent.bits[zaehler] = intResult.bits[i];
+			zaehler++;
+		}
+		
+		return result;
 		/* TODO: hier den "fast inverse square root" Algorithmus implementieren */
 		
 	}
