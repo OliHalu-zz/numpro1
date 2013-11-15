@@ -12,10 +12,10 @@ import javax.swing.JFrame;
 public class Test_FastInverse {
 
 	/** Beispielwerte fuer IEEE Standard mit 32 Bits */
-	private static int MAGIC_NUMBER = 0x5f3759df;
+	private static int MAGIC_NUMBER = 1133;
 
-	private static int anzBitsExponent = 8;
-	private static int anzBitsMantisse = 24;
+	private static int anzBitsExponent = 3;
+	private static int anzBitsMantisse = 9;
 
 	/**
 	 * Uses the FastMath class and invokes the plotter. In a logarithmically
@@ -43,7 +43,8 @@ public class Test_FastInverse {
 			xData[i] = x;
 			Gleitpunktzahl y = new Gleitpunktzahl(x);
 			System.out.println(x + " : " + FastMath.invSqrt(y).toDouble() + " ideal: " + (1./Math.sqrt(x)));
-			yData[i] = (float) FastMath.invSqrt(y).toDouble();
+			yData[i] = (float) FastMath.absInvSqrtErr(y);
+			//yData[i] = (float) FastMath.invSqrt(y).toDouble();
 
 			x *= Math.pow(100.0d, 1.0d / numOfSamplingPts);
 		}
