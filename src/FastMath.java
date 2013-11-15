@@ -44,15 +44,14 @@ public class FastMath {
 	 */
 	public static Gleitpunktzahl invSqrt(Gleitpunktzahl x) {
 
-		BitFeld magicBits = new BitFeld(x.getAnzBitsExponent()
-				+ x.getAnzBitsMantisse(), MAGIC_NUMBER);
+		BitFeld magicBits = new BitFeld(x.getAnzBitsExponent() + x.getAnzBitsMantisse() + 1, MAGIC_NUMBER);
 		
 		// Interpret float number as integer		
 		BitFeld intNumber = new BitFeld(x.getAnzBitsExponent() + x.getAnzBitsMantisse() + 1);
 		
 		System.arraycopy(x.mantisse, 0, intNumber.bits, 0, x.getAnzBitsMantisse());
 		System.arraycopy(x.exponent, 0, intNumber.bits, x.getAnzBitsMantisse(), x.getAnzBitsExponent());
-		intNumber.bits[intNumber.bits.length -1] = x.vorzeichen;
+		intNumber.bits[intNumber.getSize() -1] = x.vorzeichen;
 		
 		//Divide by 2 (and round down)
 		intNumber.shiftRight(1, false);
@@ -65,19 +64,9 @@ public class FastMath {
 		result.setAnzBitsExponent(x.getAnzBitsExponent());
 		result.setAnzBitsMantisse(x.getAnzBitsMantisse());
 		
-		result.vorzeichen = intResult.bits[intResult.getSize()-1];
-		
-		int zaehler = 0;
-		for (int i = intResult.getSize() - 2; i > x.getAnzBitsExponent() - 1; i++) {
-			result.mantisse.bits[zaehler] = intResult.bits[i];
-			zaehler++;
-		}
-		
-		zaehler = 0;
-		for (int i = x.getAnzBitsExponent() - 1; i >= 0; i++) {
-			result.exponent.bits[zaehler] = intResult.bits[i];
-			zaehler++;
-		}
+		System.arraycopy(intNumber.bits, 0, result.mantisse, 0, x.getAnzBitsMantisse());
+		System.arraycopy(intNumber.bits, x.getAnzBitsMantisse(), result.exponent, 0, x.getAnzBitsExponent());
+		result.vorzeichen = intResult.bits[intResult.getSize() - 1];
 		
 		return result;		
 	}
