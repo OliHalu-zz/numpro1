@@ -251,22 +251,20 @@ public class BitFeld {
 	 * Uebertrag gefasst werden kann.
 	 */
 	public BitFeld add(BitFeld b) {
-		/*
-		 * TODO: hier ist die bitweise Operation add zu implementieren. Die
-		 * Verwendung von toInt ist hier nicht gestattet, da die BitFeldklasse
-		 * auch fuer >32Bits funktionieren soll.
-		 */
-		if(this.size != b.size) {
-			System.err.println("add() :: BitFields do not have equal size");
-		}
+		// the addition result
 		BitFeld result = new BitFeld(b.size + 1);
+		
+		// the result of a 1-Bit addition
 		boolean[] addResult = {false , false};
 		
 		for(int i = 0; i < b.size; i++) {	
+			// add the Bits at index i (including the last carry-Bit
 			addResult = addBits(this.bits[i], b.bits[i], addResult[1]);
+			// saves the carry-Bit
 			result.bits[i] = addResult[0];
 		}
 		
+		// the hightest Bit gets set to the very last carry-Bit
 		result.bits[b.size] = addResult[1];
 		return result;
 	}
@@ -279,26 +277,28 @@ public class BitFeld {
 	 * aktuellen Objekt ist.
 	 */
 	public BitFeld sub(BitFeld b) {
-		if(this.size != b.size) {
-			System.err.println("sub() :: BitFields do not have equal size");
-		} else if(this.toInt() < b.toInt()) {
-			System.err.println("sub() :: Integer representation A < B :: Result may be negative");
-		}
-		
+		// BitFeld first, which is 1 Bit wider than this
 		BitFeld first = new BitFeld(this);
 		first.erweitern(1);
 
+		// BitFeld second, which is the 2s-complement to b. Also 1 Bit wider than b
+		// second = -b
 		BitFeld second = new BitFeld(b);
 		second.twosComplement();
 		
+		// first + second = a + (-b)
 		BitFeld result = first.add(second);
+		
+		// converts back to the original Bit-width
 		result.cutHighest2();
 		
 		return result;
 	}
 	
-	static int count;
-	
+	/**
+	 * Adds 2 Bits and the carry-Bit with xor
+	 * Returns the result in [0] and the new carry-bit in [1]
+	 */
 	private boolean[] addBits(boolean first, boolean second, boolean carry) {
 		boolean[] result = new boolean[2]; 
 		// Ergebnis der Bit Addition
@@ -309,12 +309,14 @@ public class BitFeld {
 				(first == true && second == true) ||
 				(first == true && carry == true) ||
 				(second == true && carry);
-		// System.out.println("In " + count + ": [First= " + first + " | Second= " + second + " | Carry= " + carry + "]");
-		// System.out.println("In " + count + ": [Result=" + result[0] + " | Carry= " + result[1] + "] \n");
-		count++;
 		return result;
 	} 
 	
+	/**
+	 * Translates this BitFeld to the two's complement
+	 * Inverts all Bits and add 1
+	 * Increases the size of the BitFeld by 1
+	 */
 	private void twosComplement() {
 		erweitern(1);
 		for(int i = 0; i < size; i++) {
@@ -327,9 +329,11 @@ public class BitFeld {
 				break;
 			}
 		}
-		// System.out.println("2s-complement: " + this);
 	}
 	
+	/**
+	 * Cuts off the 2 hightest Bits of this BitFeld
+	 */
 	private void cutHighest2() {
 		bits = Arrays.copyOf(bits, size - 2);
 		size -= 2;
