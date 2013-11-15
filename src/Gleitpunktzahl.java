@@ -1,10 +1,9 @@
-package src;
 public class Gleitpunktzahl {
 
 	/**
 	 * Update by
 	 * 
-	 * @author Jürgen Bräckle (braeckle@in.tum.de)
+	 * @author J��rgen Br��ckle (braeckle@in.tum.de)
 	 * @author Thomas Hutzelmann
 	 * @version 1.2  10.Mai 2013
 	 * 
@@ -244,7 +243,7 @@ public class Gleitpunktzahl {
 						- (this.mantisse.getSize() - 1));
 	}
 
-	/** Gibt das Objekt in binärer Darstellung aus */
+	/** Gibt das Objekt in bin��rer Darstellung aus */
 	public void ausgeben() {
 		System.out.println(this.toString());
 	}
@@ -257,7 +256,7 @@ public class Gleitpunktzahl {
 	/**
 	 * Sonderfaelle abfragen
 	 */
-	/** Liefert true, wenn die Gleitpunktzahl die Null repräsentiert */
+	/** Liefert true, wenn die Gleitpunktzahl die Null repr��sentiert */
 	public boolean isNull() {
 		return (!this.vorzeichen && this.mantisse.isNull() && this.exponent
 				.isNull());
@@ -277,7 +276,7 @@ public class Gleitpunktzahl {
 	}
 	
 	/**
-	 * Gibt eine Gleitpunktzahl mit dem Wert Null zurück
+	 * Gibt eine Gleitpunktzahl mit dem Wert Null zur��ck
 	 */
 	public static Gleitpunktzahl getNull() {
 		
@@ -291,7 +290,7 @@ public class Gleitpunktzahl {
 	}
 	
 	/**
-	 * Gibt eine Gleitpunktzahl mit dem Wert NaN zurück
+	 * Gibt eine Gleitpunktzahl mit dem Wert NaN zur��ck
 	 */
 	public static Gleitpunktzahl getNaN() {
 		
@@ -306,7 +305,7 @@ public class Gleitpunktzahl {
 	
 	
 	/**
-	 * Gibt eine Gleitpunktzahl mit dem Wert plus Unendlich zurück
+	 * Gibt eine Gleitpunktzahl mit dem Wert plus Unendlich zur��ck
 	 */
 	public static Gleitpunktzahl getPosInfinite() {
 		
@@ -320,7 +319,7 @@ public class Gleitpunktzahl {
 	}
 	
 	/**
-	 * Gibt eine Gleitpunktzahl mit dem Wert minus Unendlich zurück
+	 * Gibt eine Gleitpunktzahl mit dem Wert minus Unendlich zur��ck
 	 */
 	public static Gleitpunktzahl getNegInfinite() {
 		
@@ -445,7 +444,7 @@ public class Gleitpunktzahl {
 		this.mantisse = neueMantisse;
 
 		/* Sonderfaelle abfangen und Exponent setzen */
-		if (exp + expOffset >= maxExponent) { /* Exponent zu groß -> Unendlich */
+		if (exp + expOffset >= maxExponent) { /* Exponent zu gro�� -> Unendlich */
 			this.exponent.setBits(true);
 			this.mantisse.setBits(false);
 		} else if (exp + expOffset < 0) {/* Exponent zu klein -> Null */
@@ -469,12 +468,12 @@ public class Gleitpunktzahl {
 		if (expDiff == 0)
 			return;
 
-		/* Beide Mantissenfelder um expDiff vergroeßern */
+		/* Beide Mantissenfelder um expDiff vergroe��ern */
 		a.mantisse.erweitern(expDiff);
 		b.mantisse.erweitern(expDiff);
 
 		/*
-		 * Exponent der groeßeren Zahl anpassen und entsprechende Mantisse nach
+		 * Exponent der groe��eren Zahl anpassen und entsprechende Mantisse nach
 		 * links shiften
 		 */
 		if (a.compareAbsTo(b) > 0) {
@@ -488,7 +487,7 @@ public class Gleitpunktzahl {
 
 	/**
 	 * addiert das aktuelle Objekt und die Gleitpunktzahl r. Dabei wird zuerst
-	 * die betragsmaeßig groeßere Zahl denormalisiert und die Mantissen beider
+	 * die betragsmae��ig groe��ere Zahl denormalisiert und die Mantissen beider
 	 * zahlen entsprechend vergroessert. Das Ergebnis wird in einem neuen Objekt
 	 * gespeichert, normiert, und dieses wird zurueckgegeben.
 	 */
@@ -500,12 +499,58 @@ public class Gleitpunktzahl {
 		 * der BitFeldklasse. Achten Sie auf Sonderfaelle und die Einschraenkung
 		 * der Funktion BitFeld.sub.
 		 */
-		return new Gleitpunktzahl();
+		
+		//Infinity check:
+		if(this.isInfinite() || r.isInfinite()){
+			if(this.vorzeichen && r.vorzeichen){
+				return Gleitpunktzahl.getNegInfinite();
+			}
+			else{
+				return Gleitpunktzahl.getPosInfinite();
+			}
+		}
+		
+		//Null check:
+		if(this.isNull()){
+			return new Gleitpunktzahl(r);
+		}
+		if(r.isNull()){
+			return new Gleitpunktzahl(this);
+		}
+		
+		//Normal case:
+		Gleitpunktzahl result = new Gleitpunktzahl();
+		
+		Gleitpunktzahl.denormalisiere(this, r);
+		if(this.vorzeichen == r.vorzeichen){
+			result.vorzeichen = this.vorzeichen;
+			result.exponent = new BitFeld(this.exponent);
+			result.mantisse = this.mantisse.add(r.mantisse);
+		}
+		else{
+			Gleitpunktzahl max = null, min = null;
+			if(this.compareAbsTo(result) == 1){
+				max = this;
+				min = r;
+			}
+			else{
+				max = r;
+				min = this;
+			}
+			
+			result.vorzeichen = max.vorzeichen;
+			result.exponent = new BitFeld(max.exponent);
+			result.mantisse = max.mantisse.sub(min.mantisse);
+		}
+		
+		result.normalisiere(this.mantisse.getSize());
+		
+		return result;
 	}
 
 	/**
 	 * subtrahiert vom aktuellen Objekt die Gleitpunktzahl r. Dabei wird zuerst
-	 * die betragsmaeßig groeßere Zahl denormalisiert und die Mantissen beider
+	 * die betragsmae��ig groe��ere Zahl denormalisiert und die Mantissen beider
 	 * zahlen entsprechend vergroessert. Das Ergebnis wird in einem neuen Objekt
 	 * gespeichert, normiert, und dieses wird zurueckgegeben.
 	 */
@@ -517,7 +562,14 @@ public class Gleitpunktzahl {
 		 * der BitFeldklasse. Achten Sie auf Sonderfaelle und die Einschraenkung
 		 * der Funktion BitFeld.sub.
 		 */
-		return new Gleitpunktzahl();
+		
+		if(r.isNull()){
+			return new Gleitpunktzahl(this);
+		}
+		
+		Gleitpunktzahl rCopy = new Gleitpunktzahl(r); 
+		rCopy.vorzeichen = !rCopy.vorzeichen;
+		
+		return this.add(rCopy);
 	}
-
 }
