@@ -44,7 +44,7 @@ public class BitFeld {
 	/**
 	 * erzeugt ein Bitfeld der Laenge size und setzt die Bits entsprechend dem
 	 * Integer wert
-	 *for/
+	 */
 	BitFeld(int size, int wert) {
 		this(size);
 		this.setInt(wert);
