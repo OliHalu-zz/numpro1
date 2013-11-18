@@ -42,9 +42,7 @@ public class Test_FastInverse {
 		for (int i = 0; i < numOfSamplingPts; i++) {
 			xData[i] = x;
 			Gleitpunktzahl y = new Gleitpunktzahl(x);
-			System.out.println(x + " : " + FastMath.invSqrt(y).toDouble() + " ideal: " + (1./Math.sqrt(x)));
 			yData[i] = (float) FastMath.absInvSqrtErr(y);
-			//yData[i] = (float) FastMath.invSqrt(y).toDouble();
 
 			x *= Math.pow(100.0d, 1.0d / numOfSamplingPts);
 		}

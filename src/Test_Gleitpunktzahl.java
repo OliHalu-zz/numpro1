@@ -181,7 +181,6 @@ public class Test_Gleitpunktzahl {
 	public static void checkResult(Gleitpunktzahl gleitref, Gleitpunktzahl gleiterg){
 		if (gleiterg.compareAbsTo(gleitref) != 0
 				|| gleiterg.vorzeichen != gleitref.vorzeichen) {
-			//printAdd(x.toString(), y.toString());
 			System.out.println("      Ihr Ergebnis lautet:           " + gleitref.toDouble() + " Bool:" + gleitref
 					+ "\n      Das Korrekte Ergebnis lautet:  " + gleiterg.toDouble() + " Bool:" + gleiterg + "\n");
 		} else {
@@ -235,11 +234,6 @@ public class Test_Gleitpunktzahl {
 		Gleitpunktzahl.setAnzBitsMantisse(8);
 		Gleitpunktzahl.setAnzBitsExponent(6);
 
-		Gleitpunktzahl x;
-		Gleitpunktzahl y;
-		Gleitpunktzahl gleitref = new Gleitpunktzahl();
-		Gleitpunktzahl gleiterg;
-
 		/* Addition */
 		System.out.println("Test der Addition mit Gleitpunktzahl");
 		
@@ -248,13 +242,14 @@ public class Test_Gleitpunktzahl {
 		testDoubleAdd(-13, 9.123);
 		testDoubleAdd(-13.57, -4.3);
 		testDoubleAdd(100.999, 10.56);
-		testDoubleAdd(88.3, 10.3);
 
+		System.out.println("Test der Substraktion mit Gleitpunktzahl");
+		
 		/* Sunstraktion */
-		testDoubleSub(45.34, 100.3);
+		testDoubleSub(45.40, 100.5);
 		testDoubleSub(233.43, 10.3);
 		testDoubleSub(-45.55, 10.3);
-		testDoubleSub(88.3, -10.3);
+		testDoubleSub(88.3, -10.1);
 
 		/* Sonderfaelle */
 		System.out.println("Test der Sonderfaelle mit Gleitpunktzahl");
@@ -264,36 +259,7 @@ public class Test_Gleitpunktzahl {
 		testGleitpunktzahlAdd(Gleitpunktzahl.getNegInfinite(), Gleitpunktzahl.getNegInfinite(), Gleitpunktzahl.getNegInfinite());
 		testGleitpunktzahlAdd(Gleitpunktzahl.getNull(), new Gleitpunktzahl(1.34), new Gleitpunktzahl(1.34));
 		testGleitpunktzahlAdd(new Gleitpunktzahl(0.0), new Gleitpunktzahl(1.0 / 0.0), Gleitpunktzahl.getPosInfinite());
-		
-		try {
-			// Test: Sonderfaelle
-			// 0 - inf
-			System.out.println("Test: Sonderfaelle");
-			x = new Gleitpunktzahl(0.0);
-			y = new Gleitpunktzahl(1.0 / 0.0);
-			
-			// Referenzwerte setzen
-			gleitref.mantisse.setInt(0);
-			gleitref.exponent.setInt(63);
-			gleitref.vorzeichen = true;
-
-			// Berechnung mit der Methode des Studenten durchfuehren
-			gleiterg = x.sub(y);
-
-			// Test, ob Ergebnis korrekt
-			if (gleiterg.compareAbsTo(gleitref) != 0
-					|| gleiterg.vorzeichen != gleitref.vorzeichen) {
-				printSub(x.toString(), y.toString());
-				printErg(gleiterg.toString(), gleitref.toString());
-			} else {
-				System.out.println("    Richtiges Ergebnis\n");
-			}
-
-		} catch (Exception e) {
-			System.out
-					.print("Exception bei der Auswertung des Ergebnis in der Klasse Gleitpunktzahl!!\n");
-		}
-
+		testGleitpunktzahlSub(new Gleitpunktzahl(0.0), new Gleitpunktzahl(1.0 / 0.0), Gleitpunktzahl.getNegInfinite());
 	}
 
 	private static void printAdd(String x, String y) {
