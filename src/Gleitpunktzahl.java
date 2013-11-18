@@ -518,7 +518,7 @@ public class Gleitpunktzahl {
 		
 		//Normal case:
 		Gleitpunktzahl a = new Gleitpunktzahl(this);
-		Gleitpunktzahl b = new Gleitpunktzahl(r);
+		Gleitpunktzahl b = new Gleitpunktzahl(r); 
 		Gleitpunktzahl result = new Gleitpunktzahl();
 		
 		Gleitpunktzahl.denormalisiere(a, b);
@@ -544,7 +544,7 @@ public class Gleitpunktzahl {
 			result.mantisse = max.mantisse.sub(min.mantisse);
 		}
 		
-		result.normalisiere(result.exponent.getSize() + 1);
+		result.normalisiere(this.getAnzBitsMantisse()-1);
 		
 		return result;
 	}
