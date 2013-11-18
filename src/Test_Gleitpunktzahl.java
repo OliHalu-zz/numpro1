@@ -1,8 +1,8 @@
 public class Test_Gleitpunktzahl {
 
 	public static void main(String[] argv) {
-		//testBitFeld();
-		 test_Gleitpunktzahl();
+		testBitFeld();
+		 //test_Gleitpunktzahl();
 	}
 
 	private static void testBitFeld() {
