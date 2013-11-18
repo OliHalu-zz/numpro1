@@ -43,6 +43,10 @@ public class FastMath {
 	 * @return Approximation for 1 / sqrt(x).
 	 */
 	public static Gleitpunktzahl invSqrt(Gleitpunktzahl x) {
+		if(x.vorzeichen == true || x.isInfinite() || x.isNaN() || x.isNull()){
+			return Gleitpunktzahl.getNaN();
+		}
+		
 		BitFeld magicIEEE = new BitFeld(x.getAnzBitsExponent() + x.getAnzBitsMantisse(), MAGIC_NUMBER);
 		BitFeld intIEEE = FastMath.gleitpunktzahlToIEEE(x);
 		
