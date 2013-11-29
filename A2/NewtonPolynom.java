@@ -70,6 +70,7 @@ public class NewtonPolynom implements InterpolationMethod {
 	 */
 	public void init(double[] x, double[] y) {
 		this.x = Arrays.copyOf(x, x.length);
+		
 		computeCoefficients(y);
 	}
 
@@ -87,6 +88,26 @@ public class NewtonPolynom implements InterpolationMethod {
 	 */
 	private void computeCoefficients(double[] y) {
 		/* TODO: diese Methode ist zu implementieren */
+		this.f = new double[x.length];
+		this.a = new double[x.length];
+		
+		double column[] = new double[y.length];
+		//init:
+		for(int i=0; i<y.length;++i){
+			column[i] = y[i];
+		}
+		a[0] = y[0];
+		f[0] = y[y.length - 1];
+		
+		double h = (x[x.length - 1] - x[0])/x.length;
+		
+		for(int i=1; i<y.length;++i){
+			for(int k=0;k<y.length-i;++k){
+				column[k] = (column[k+1] - column[k])/(x[k+1] - x[k]);
+			}
+			//f[i] = column[y.length-i];
+			a[i] = column[0];		
+		}
 	}
 
 	/**
@@ -130,7 +151,10 @@ public class NewtonPolynom implements InterpolationMethod {
 	 */
 	@Override
 	public double evaluate(double z) {
-		/* TODO: diese Methode ist zu implementieren */
-		return 0.0;
+		double result = a[a.length - 1];
+		for(int i=a.length-1;i>=0;--i){
+			result = a[i] + (z-x[i])*result;
+		}
+		return result;
 	}
 }
