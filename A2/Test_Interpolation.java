@@ -7,15 +7,16 @@ public class Test_Interpolation {
 	 */
 	public static void main(String[] args) {
 		testNewton();
-		testSplines();
+		//testSplines();
 	}
 
 	private static void testNewton() {
 
-		double[] x = { -1, 1, 3 };
-		double[] y = { -3, 1, -3 };
+		double[] x = { -1, 1};
+		double[] y = { -3, 1};
 		NewtonPolynom p = new NewtonPolynom(x, y);
-
+		p.addSamplingPoint(3, -3);
+		
 		System.out.println(p.evaluate(0) + " sollte sein: 0.0");
 		System.out.println("-------------------------------");
 	}

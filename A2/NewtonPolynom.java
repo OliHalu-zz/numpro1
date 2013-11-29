@@ -99,13 +99,11 @@ public class NewtonPolynom implements InterpolationMethod {
 		a[0] = y[0];
 		f[0] = y[y.length - 1];
 		
-		double h = (x[x.length - 1] - x[0])/x.length;
-		
 		for(int i=1; i<y.length;++i){
 			for(int k=0;k<y.length-i;++k){
-				column[k] = (column[k+1] - column[k])/(x[k+1] - x[k]);
+				column[k] = (column[k+1] - column[k])/(x[i+k]-x[k]);
 			}
-			//f[i] = column[y.length-i];
+			f[i] = column[y.length-i-1];
 			a[i] = column[0];		
 		}
 	}
@@ -141,7 +139,41 @@ public class NewtonPolynom implements InterpolationMethod {
 	 *            neuer Stuetzwert
 	 */
 	public void addSamplingPoint(double x_new, double y_new) {
-		/* TODO: diese Methode ist zu implementieren */
+		//In this case we have to recalculate the whole schema
+		if(x_new <= x[x.length - 1]){
+			return;
+		}
+		
+		//Point is inside the array:
+		int position = Arrays.binarySearch(x, 0, x.length, x_new);
+		if(position >= 0){
+			return;
+		}
+		
+		//Point is outside:
+		double nx[] = new double[x.length + 1];
+		for(int i=0; i<x.length; ++i){
+			nx[i] = x[i];
+		}
+		nx[x.length] = x_new;
+		this.x = nx;
+		
+		//Calculate new f:
+		double f_new[] = new double[f.length + 1];
+		f_new[0] = y_new;
+		
+		for(int i=1; i<f_new.length;++i){
+			f_new[i] = (f_new[i-1] - f[i-1])/(x_new-x[x.length-i-1]);	
+		}
+		this.f = f_new;
+		
+		//Update coefficients:
+		double new_a[] = new double[a.length + 1];
+		for(int i=0; i<a.length; ++i){
+			new_a[i] = a[i];
+		}
+		new_a[a.length] = f[f.length - 1];
+		this.a = new_a;
 	}
 
 	/**
@@ -152,7 +184,7 @@ public class NewtonPolynom implements InterpolationMethod {
 	@Override
 	public double evaluate(double z) {
 		double result = a[a.length - 1];
-		for(int i=a.length-1;i>=0;--i){
+		for(int i=a.length-2;i>=0;--i){
 			result = a[i] + (z-x[i])*result;
 		}
 		return result;
