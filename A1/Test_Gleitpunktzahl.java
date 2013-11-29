@@ -1,8 +1,8 @@
 public class Test_Gleitpunktzahl {
 
 	public static void main(String[] argv) {
-		testBitFeld();
-		 //test_Gleitpunktzahl();
+		//testBitFeld();
+		 test_Gleitpunktzahl();
 	}
 
 	private static void testBitFeld() {
@@ -231,9 +231,10 @@ public class Test_Gleitpunktzahl {
 		 * Verglichen werden die BitFelder fuer Mantisse und Exponent und das
 		 * Vorzeichen
 		 */
-		Gleitpunktzahl.setAnzBitsMantisse(8);
-		Gleitpunktzahl.setAnzBitsExponent(6);
+		Gleitpunktzahl.setAnzBitsMantisse(9);
+		Gleitpunktzahl.setAnzBitsExponent(8);
 
+		System.out.println((new Gleitpunktzahl(90.6)).toDouble());
 		/* Addition */
 		System.out.println("Test der Addition mit Gleitpunktzahl");
 		
