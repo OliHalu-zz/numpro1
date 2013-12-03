@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.math.*;
 
 /**
  * Die Klasse CubicSpline bietet eine Implementierung der kubischen Splines. Sie
@@ -82,7 +83,33 @@ public class CubicSpline implements InterpolationMethod {
 	 * berechnet werden muessen.
 	 */
 	public void computeDerivatives() {
-		/* TODO: diese Methode ist zu implementieren */
+		if(n == 2){
+			return;
+		}
+		
+		if(n ==3){
+			yprime[1] = 3./(4.*h)*(yprime[2]-yprime[0]);
+			return;
+		}
+		
+		double diag[] = new double[yprime.length - 2];
+		Arrays.fill(diag, 4);
+		
+		double lower[] = new double[diag.length - 1];
+		Arrays.fill(lower, 1);
+		
+		double upper[] = new double[diag.length - 1];
+		Arrays.fill(upper, 1);
+		
+		TridiagonalMatrix matrix = new TridiagonalMatrix(lower, diag, upper);
+		
+		double b[] = new double[diag.length];
+		for(int i=0; i<diag.length; ++i){
+			b[i] = 3./h*(y[i+2] - y[i]);
+		}
+		
+		double[] result = matrix.solveLinearSystem(b);
+		System.arraycopy(result, 0, yprime, 1, result.length);
 	}
 
 	/**
@@ -93,7 +120,21 @@ public class CubicSpline implements InterpolationMethod {
 	 */
 	@Override
 	public double evaluate(double z) {
-		/* TODO: diese Methode ist zu implementieren */
-		return 0.0;
+		//
+		if(z<=a){
+			return y[0];
+		}
+		
+		if(z>=b){
+			return y[n];
+		}
+		
+		int i = (int) ((z - a) / h);
+		double t = (z - (a + i*h))/h;
+
+		return y[i]*(1-3*Math.pow(t, 2) + 2*Math.pow(t, 3)) +
+			   y[i+1]*(3*Math.pow(t, 2) - 2*Math.pow(t, 3)) + 
+			   h*yprime[i]*(t-2*Math.pow(t, 2) + Math.pow(t, 3)) +
+			   h*yprime[i+1]*(-Math.pow(t, 2) + Math.pow(t, 3));
 	}
 }
