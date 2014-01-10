@@ -65,8 +65,7 @@ public class Gauss {
 				}
 			}
 		}
-		
-		return cA[cA.length-1][cA.length-1] != 0;
+		return Math.abs(cA[cA.length-1][cA.length-1]) > Util.eps;
 	}
 
 	public static double[][] copyMatrix(double[][] A, int rowsCount, int columnsCount){	
@@ -137,6 +136,7 @@ public class Gauss {
 			//invertible matrix case:
 			return result;
 		}
+		Util.printMatrix(cA);
 		
 		int vIndex = 0; 
 		for(;vIndex<cA.length;++vIndex){
