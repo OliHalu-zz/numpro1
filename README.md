@@ -1,4 +1,4 @@
 numpro1
 =======
 
-First assignment in "Numerisches Programmieren"
+Assignments in "Numerisches Programmieren"
