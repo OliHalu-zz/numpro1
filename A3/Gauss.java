@@ -11,7 +11,22 @@ public class Gauss {
 	 */
 	public static double[] backSubst(double[][] R, double[] b) {
 		//TODO: Diese Methode ist zu implementieren
-		return new double[2];
+		int n = b.length-1;
+		
+		double[] result = new double[n+1];
+		result[n] = b[n]/R[n][n]; //init
+		
+		for(int i=n-1;i>=0;--i){
+			
+			double sum = 0.;
+			for(int j=i+1;j<=n;++j){
+				sum += R[j][i]*result[j];
+			}
+			
+			result[i] = (b[i] - sum)/R[i][i];
+		}
+		
+		return result;
 	}
 
 	/**
