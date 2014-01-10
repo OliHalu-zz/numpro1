@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 
 
 public class Gauss {
@@ -20,7 +22,7 @@ public class Gauss {
 			
 			double sum = 0.;
 			for(int j=i+1;j<=n;++j){
-				sum += R[j][i]*result[j];
+				sum += R[i][j]*result[j];
 			}
 			
 			result[i] = (b[i] - sum)/R[i][i];
@@ -28,7 +30,55 @@ public class Gauss {
 		
 		return result;
 	}
+	
+	/**
+	 * @return True if matrix is not singular
+	 */
+	private static boolean triangulateMatrix(double[][] cA){
+		for(int k=0; k<cA.length-1;++k){
+			double max = 0.;
+			int maxIndex = 0;
+			for(int i=k;i<cA.length;++i){
+				double candidate = Math.abs(cA[i][k]);
+				if(candidate > max){
+					max = candidate;
+					maxIndex = i;
+				}
+			}
+			if(Math.abs(max) <= Util.eps){
+				return false;
+			}
+			
+			//swap k and maxIndex:
+			if(maxIndex != k){
+				double[] tempA = cA[maxIndex];
+				cA[maxIndex] = cA[k];
+				cA[k] = tempA;
+			}
+			
+			//elimination:
+			for(int i=k+1;i<cA.length;i++){
+				double mult = cA[i][k]/cA[k][k];
+				
+				for(int inner_col=k;inner_col<cA[0].length;++inner_col){
+					cA[i][inner_col] = cA[i][inner_col] - mult*cA[k][inner_col];
+				}
+			}
+		}
+		
+		return cA[cA.length-1][cA.length-1] != 0;
+	}
 
+	public static double[][] copyMatrix(double[][] A, int rowsCount, int columnsCount){	
+		double[][] cA = new double[rowsCount][columnsCount];
+		for(int i=0;i<Math.min(rowsCount, A.length);++i){
+			for(int j=0;j<Math.min(columnsCount, A[0].length);++j){
+				cA[i][j] = A[i][j];
+			}
+		}
+		return cA;
+	}
+ 	
 	/**
 	 * Diese Methode soll die Loesung x des LGS A*x=b durch Gauss-Elimination mit
 	 * Spaltenpivotisierung ermitteln. A und b sollen dabei nicht veraendert werden. 
@@ -37,8 +87,28 @@ public class Gauss {
 	 * b: Ein Vektor der Laenge n
 	 */
 	public static double[] solve(double[][] A, double[] b) {
-		//TODO: Diese Methode ist zu implementieren
-		return new double[2];
+		//embed b vector into the a matrix 
+		double[][] cA = copyMatrix(A, A.length, A.length+1);
+		for(int i=0;i<b.length;++i){
+			cA[i][A.length] = b[i];
+		}
+		
+		if(!triangulateMatrix(cA)){
+			throw new ArithmeticException("Not solvable");
+		}
+		
+		//extract b and A from the combined matrix
+		double[][] R = new double[A.length][A.length];
+		double[] rB = new double[A.length];
+		
+		for(int i=0; i<A.length; ++i){
+			R[i] = Arrays.copyOf(cA[i], A[i].length);
+		}
+		for(int i=0; i<cA.length; ++i){
+			rB[i] = cA[i][cA[0].length-1];
+		}
+		
+		return Gauss.backSubst(R, rB);
 	}
 
 	/**
@@ -60,7 +130,34 @@ public class Gauss {
 	 */
 	public static double[] solveSing(double[][] A) {
 		//TODO: Diese Methode ist zu implementieren
-		return new double[2];
+		double[][] cA = copyMatrix(A, A.length, A.length);
+		double[] result = new double[A.length];
+		
+		if(triangulateMatrix(cA)){
+			//invertible matrix case:
+			return result;
+		}
+		
+		int vIndex = 0; 
+		for(;vIndex<cA.length;++vIndex){
+			if(Math.abs(cA[vIndex][vIndex]) < Util.eps){
+				break;
+			}
+		}
+		
+		double[][] T = copyMatrix(cA, vIndex, vIndex);
+		double[] v = new double[vIndex];
+		for(int i=0;i<v.length;++i){
+			v[i] = -cA[i][vIndex];
+		}
+
+		double[] vRes = backSubst(T, v);
+		for(int i=0;i<vRes.length;++i){
+			result[i] = vRes[i];
+		}
+		result[vRes.length] = 1;
+		
+		return result;
 	}
 
 	/**
