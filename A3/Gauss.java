@@ -136,8 +136,6 @@ public class Gauss {
 			//invertible matrix case:
 			return result;
 		}
-		System.out.println("Matrix cA after triangulation");
-		Util.printMatrix(cA);
 		
 		int vIndex = 0; 
 		for(;vIndex<cA.length;++vIndex){
@@ -151,11 +149,6 @@ public class Gauss {
 		for(int i=0;i<v.length;++i){
 			v[i] = -cA[i][vIndex];
 		}
-		System.out.println("Matrix T");
-		Util.printMatrix(T);
-
-		System.out.println("Vector v");
-		Util.printVector(v);
 
 		double[] vRes = backSubst(T, v);
 		for(int i=0;i<vRes.length;++i){
