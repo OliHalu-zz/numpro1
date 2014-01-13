@@ -29,7 +29,7 @@ public class PageRank {
 				result[j][i] = (1-rho)*(L[j][i]/sum) + (rho/result.length);
 			}	
 
-			System.out.println("Matrix result nach Zeile "+i);
+			System.out.println("Matrix result nach Spalte "+i);
 			Util.printMatrix(result);
 			
 			
