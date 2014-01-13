@@ -12,19 +12,31 @@ public class PageRank {
 	 */
 	public static double[][] buildProbabilityMatrix(int[][] L, double rho) {
 		//TODO: Diese Methode ist zu implementieren
+		System.out.println("Matrix L");
+		Util.printMatrix(L);
+
 		double[][] result = new double[L.length][L[0].length];
+
 		
 		for(int i=0;i<result.length;++i){
 			double sum = 0;
 			for(int j=0;j<result[0].length;++j){
-				sum+=L[i][j];
+				sum+=L[j][i];
+				System.out.println("Aktuelle anzahl Links von "+i+" ausgehend: "+sum);
 			}
+
 			for(int j=0;j<result[0].length;++j){
-				result[i][j] = (1-rho)*L[i][j]/sum + rho/result.length;
+				result[j][i] = (1-rho)*(L[j][i]/sum) + (rho/result.length);
 			}	
+
+			System.out.println("Matrix result nach Zeile "+i);
+			Util.printMatrix(result);
 			
 			
 		}
+
+		System.out.println("Matrix result");
+		Util.printMatrix(result);
 		
 		return result;
 	}
@@ -48,8 +60,15 @@ public class PageRank {
 		for(int i=0;i<A.length;++i){
 			A[i][i] -=1;
 		}
+
+		System.out.println("Marix A.");
+		Util.printMatrix(A);
 		
 		double[] p = Gauss.solveSing(A);
+
+		System.out.println("Vetor p");
+		Util.printVector(p);
+
 		double sum = 0;
 		for(int i=0;i<p.length;++i){
 			sum += p[i];
@@ -57,6 +76,9 @@ public class PageRank {
 		for(int i=0;i<p.length;++i){
 			p[i] = p[i]/sum;
 		}
+
+		System.out.println("Vetor p nach normierung");
+		Util.printVector(p);
 		
 		return p;
 	}
