@@ -19,12 +19,12 @@ public class Test {
 	public static void main(String[] args) {
 
 		/**************************************/
-		boolean startPlanetensystem = true;
-		boolean startFreierFall = true;
+		boolean startPlanetensystem = false;
+		boolean startFreierFall = false;
 
 		boolean testExpliziteVerfahren = true;
-		boolean testNewton = true;
-		boolean testImplEuler = true;
+		boolean testNewton = false;
+		boolean testImplEuler = false;
 		/**************************************/
 
 		if (startPlanetensystem) {
@@ -54,8 +54,9 @@ public class Test {
 
 			@Override
 			public double[] auswerten(double t, double[] y) {
-				double[] v = new double[1];
+				double[] v = new double[y.length];
 				v[0] = 0;
+				v[1] = 0 - 9.81 * t; //Fall mit Startgeschwindigkeit 0.
 				return v;
 			}
 		};
@@ -63,7 +64,7 @@ public class Test {
 		/* Bsp-Startwerte */
 		double delta_t = 1;
 		double t0 = 0;
-		double[] y0 = { 42 };
+		double[] y0 = { 0, 1000 }; // Freier Fall aus 1000m Höhe.
 
 
 
@@ -100,10 +101,10 @@ public class Test {
 		t = t0;
 		for (int k = 1; k <= 4; k++) {
 			y = rk4.nextStep(y, t, delta_t, ode);
-			System.out.println("y" + k + " = " + y[0]);
+			System.out.println("y" + k + " = " + y[1]);
 			t = t + delta_t;
 		}
-		System.out.println("Richtig waere: Eigene Beispiele überlegen" );
+		System.out.println("Exakt richtig waere: 995.095, 980.38, 960.76, 921.52" );
 
 
 		System.out.println("*************************************\n");
