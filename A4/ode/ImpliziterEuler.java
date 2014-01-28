@@ -23,7 +23,16 @@ public class ImpliziterEuler implements Einschrittverfahren {
 	public double[] nextStep(final double[] y_k, final double t,
 			final double delta_t, final ODE ode) {
 		//TODO: diese Methode ist zu implementieren
-		return Arrays.copyOf(y_k, y_k.length);
+		
+		Funktion f = new Funktion(y_k.length, y_k.length) {
+			@Override
+			public double[] auswerten(double[] x) {
+				double[] minusX = RungeKutta4.multScalar(x, -1);
+				return  RungeKutta4.addVectors(RungeKutta4.addVectors(y_k, RungeKutta4.multScalar(ode.auswerten(t + delta_t, x), delta_t)), minusX); 
+			}
+		};
+		
+		return newtonMethod(f, y_k, 10E-8, 20);
 	}
 
 	/**
@@ -44,10 +53,43 @@ public class ImpliziterEuler implements Einschrittverfahren {
 	 *            Abbruch der Schleife nach maximal maxIter Iterationen
 	 * @return
 	 */
+	public static double[][] getInverseJakobian(Funktion f, double[] x){
+		double[][] idMatrix = new double[x.length][x.length];
+		for(int i=0;i<idMatrix.length; ++i){
+			idMatrix[i][i] = 1;
+		}
+		
+		double[][] jacobi = getJacobiMatrix(f, x); 
+		double[][] result = new double[x.length][x.length];
+		for(int i=0; i<idMatrix.length; ++i){
+			result[i] = gauss(jacobi, idMatrix[i]);
+		}
+		
+		return result; 
+	}
+	
+	public static double[] multMatrVector(double [][] matr, double [] vector){
+		double[] result = new double[vector.length];
+		
+		for(int k=0; k<matr.length; ++k){
+			for(int i=0; i<vector.length; ++i){
+				result[i] += matr[i][k] * vector[i];
+			}
+		}
+		
+		return result;
+	}
+	
 	public static double[] newtonMethod(Funktion f, double[] x0, double eps,
 			int maxIter) {
 		//TODO: diese Methode ist zu implementieren
-		return Arrays.copyOf(x0, x0.length);
+		double[] x_k = Arrays.copyOf(x0, x0.length);
+		
+		for(int i=0; i<maxIter && norm(f.auswerten(x_k)) > eps; ++i){ 
+			x_k = RungeKutta4.addVectors(RungeKutta4.multScalar(multMatrVector(getInverseJakobian(f, x_k), f.auswerten(x_k)),-1), x_k);
+		}
+		
+		return x_k;
 	}
 
 	/**

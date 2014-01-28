@@ -8,11 +8,11 @@ import java.util.Arrays;
  * @author braeckle
  * 
  */
+
 public class ExpliziterEuler implements Einschrittverfahren {
 
 	public double[] nextStep(double[] y_k, double t, double delta_t, ODE ode) {
-		//TODO: diese Methode ist zu implementieren
-		return Arrays.copyOf(y_k, y_k.length);
+		return RungeKutta4.addVectors(y_k, RungeKutta4.multScalar(ode.auswerten(t, y_k), delta_t));
 	}
 
 }

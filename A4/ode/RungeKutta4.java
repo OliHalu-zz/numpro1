@@ -94,7 +94,7 @@ public class RungeKutta4 implements Einschrittverfahren {
 	/**
 	 * addiert die zwei Vektoren a und b
 	 */
-	private double[] addVectors(double[] a, double[] b) {
+	public static double[] addVectors(double[] a, double[] b) {
 		double[] erg = new double[a.length];
 		for (int i = 0; i < a.length; i++) {
 			erg[i] = a[i] + b[i];
@@ -105,7 +105,7 @@ public class RungeKutta4 implements Einschrittverfahren {
 	/**
 	 * multipliziert den Skalar scalar auf den Vektor a
 	 */
-	private double[] multScalar(double[] a, double scalar) {
+	public static double[] multScalar(double[] a, double scalar) {
 		double[] erg = new double[a.length];
 		for (int i = 0; i < a.length; i++) {
 			erg[i] = scalar * a[i];
